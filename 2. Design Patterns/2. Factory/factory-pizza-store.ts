@@ -4,13 +4,15 @@ enum PizzaType {
     Default = 'default'
 }
 
-class Pizza {
+abstract class Pizza {
     name: string;
     dough: string;
     sauce: string;
     toppings: string[] = [];
-
-    constructor() { }
+    veggies: string[];
+    cheese: string;
+    pepperoni: string;
+    clams: string;
 
     prepare() {
         console.log("Preparing ...", this.name);
@@ -18,14 +20,21 @@ class Pizza {
         console.log("Adding sauce ...", this.sauce);
         console.log("Adding toppings ...", this.toppings)
     }
+
     bake() {
         console.log("Baking at 100 heat ...")
     }
+    
     cut() {
         console.log("Cutting the pizza")
     }
+
     box() {
         console.log("Placing in the box")
+    }
+
+    setName(name: string) {
+        this.name = name;
     }
 
     getName(): string {
