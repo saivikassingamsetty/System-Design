@@ -56,14 +56,14 @@ class VehicleFactory {
   static createVehicle(type: string, number: string) {
     switch (type) {
       case VehicleType.Bike:
-        return new Bike(number, parkingLot);
+        return new Bike(number, VehicleFactory.parkingLot);
       case VehicleType.Car:
-        return new Car(number, parkingLot);
+        return new Car(number, VehicleFactory.parkingLot);
       case VehicleType.Truck:
-        return new Truck(number, parkingLot);
+        return new Truck(number, VehicleFactory.parkingLot);
     }
 
-    return new Bike(number, parkingLot);
+    return new Bike(number, VehicleFactory.parkingLot);
   }
 }
 
