@@ -63,7 +63,7 @@ export class User {
   downvote(entity: Votable): void {
     entity.downvote(this);
     console.log(
-      `${this.username} downvoted the ${entity instanceof Question ? "answer" : "question"}`
+      `${this.username} downvoted the ${entity instanceof Question ? "question" : "answer"}`
     );
   }
 }
