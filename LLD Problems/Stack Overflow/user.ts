@@ -12,11 +12,14 @@ export class User {
   private answers: Answer[] = [];
   private comments: SOFComment[] = [];
   reputation: number = 0;
+  private reputationQueue: { change: number; resolve: () => void }[] = [];
+  private isQueueProcessing = false;
 
   constructor(username: string, password: string) {
     this.username = username;
     this.password = password;
     this.platform = StackOverFlow.getInstance();
+    this.platform.addUser(this);
     console.log(`User created: ${this.username}`);
   }
 
@@ -24,7 +27,7 @@ export class User {
     const question = new Question(text, this, tags);
     this.platform.addQuestion(question);
     this.questions.push(question);
-    this.reputation++;
+    this.increaseReputation();
     console.log(
       `${this.username} posted a question: "${text}" with tags: ${tags.join(", ")}`
     );
@@ -36,7 +39,7 @@ export class User {
     this.platform.addAnswer(answer);
     question.addAnswer(answer);
     this.answers.push(answer);
-    this.reputation++;
+    this.increaseReputation();
     console.log(
       `${this.username} posted an answer: "${text}" for question: "${question.questionText}"`
     );
@@ -47,23 +50,57 @@ export class User {
     const comment = new SOFComment(entity, text, this);
     entity.addComment(comment);
     this.comments.push(comment);
-    this.reputation++;
+    this.increaseReputation();
     console.log(
       `${this.username} commented: "${text}" on ${entity instanceof Question ? "question" : "answer"}`
     );
   }
 
   upvote(entity: Votable): void {
-    entity.upvote(this);
     console.log(
       `${this.username} upvoted the ${entity instanceof Question ? "question" : "answer"}`
     );
+    entity.upvote(this);
   }
 
   downvote(entity: Votable): void {
-    entity.downvote(this);
     console.log(
       `${this.username} downvoted the ${entity instanceof Question ? "question" : "answer"}`
     );
+    entity.downvote(this);
+  }
+
+  increaseReputation() {
+    this.updateReputation(1);
+    // this.reputation++;
+  }
+
+  decreaseReputation() {
+    this.updateReputation(-1);
+    // this.reputation--;
+  }
+
+  private updateReputation(change: number) {
+    this.reputationQueue.push({
+      change,
+      resolve: () => {},
+    });
+
+    if (!this.isQueueProcessing) {
+      this.processQueue();
+    }
+  }
+
+  private async processQueue() {
+    if (this.isQueueProcessing) return;
+
+    this.isQueueProcessing = true;
+
+    while (this.reputationQueue.length > 0) {
+      const { change } = this.reputationQueue.shift()!;
+      this.reputation += change;
+    }
+
+    this.isQueueProcessing = false;
   }
 }

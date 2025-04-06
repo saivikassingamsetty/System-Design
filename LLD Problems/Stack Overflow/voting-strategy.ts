@@ -15,7 +15,7 @@ export class VotingStrategy implements Votable {
       return;
     }
     this.votes++;
-    this.author.reputation++; // Increase the author's reputation when an upvote occurs.
+    this.author.increaseReputation(); // Increase the author's reputation when an upvote occurs.
     console.log(
       `Reputation updated: ${this.author.username} now has ${this.author.reputation} reputation.`
     );
@@ -28,7 +28,7 @@ export class VotingStrategy implements Votable {
     }
     this.votes--;
     // Assuming downvotes reduce reputation
-    this.author.reputation--; // Decrease the author's reputation when a downvote occurs.
+    this.author.decreaseReputation(); // Decrease the author's reputation when a downvote occurs.
     console.log(
       `Reputation updated: ${this.author.username} now has ${this.author.reputation} reputation.`
     );

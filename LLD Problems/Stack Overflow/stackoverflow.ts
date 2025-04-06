@@ -29,7 +29,37 @@ export class StackOverFlow {
     );
   }
 
+  addUser(user: User) {
+    this.users.push(user);
+    console.log(`User added to StackOverflow: "${user.username}"`);
+  }
+
   showReputation(user: User): void {
     console.log(`User ${user.username} has a reputation of ${user.reputation}`);
+  }
+
+  search(searchString: string, type: string) {
+    if (type.toLowerCase() == "user") {
+      const user = this.users.find((u: User) => {
+        return u.username.toLowerCase().includes(searchString.toLowerCase());
+      });
+      return user;
+    }
+
+    if (type.toLowerCase() == "question") {
+      const question = this.questions.find((q: Question) =>
+        q.questionText.toLowerCase().includes(searchString.toLowerCase())
+      );
+      return question;
+    }
+
+    if (type.toLowerCase() == "answer") {
+      const answer = this.answers.find((ans: Answer) =>
+        ans.answerText.toLowerCase().includes(searchString.toLowerCase())
+      );
+      return answer;
+    }
+
+    return;
   }
 }

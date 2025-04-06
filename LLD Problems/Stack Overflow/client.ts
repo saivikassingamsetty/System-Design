@@ -23,4 +23,5 @@ userC.postComment(question1, "here's the correct way ... ");
 userC.downvote(answer1);
 userC.postComment(answer1, "that's not how we do it!");
 
-stackOverFlow.showReputation(userB);
+const user = stackOverFlow.search("Sai", "user") as User;
+stackOverFlow.showReputation(user);
