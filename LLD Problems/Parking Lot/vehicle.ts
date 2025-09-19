@@ -1,33 +1,23 @@
-import { ParkingLevel } from "./parking-level";
-import { ParkingSpot } from "./parking-spot";
+export enum VehicleType {
+  BIKE = "bike",
+  CAR = "car",
+  TRUCK = "truck",
+}
 
-abstract class Vehicle {
-  number: string = "";
-  type: string = "bike";
-  parkedSpot: ParkingSpot | null = null;
-  parkedLevel: ParkingLevel | null = null;
+export abstract class Vehicle {
+  private licenseNumber: string;
+  private vehicleType: VehicleType;
 
-  constructor(number: string) {
-    this.number = number;
+  constructor(type: VehicleType, number: string) {
+    this.vehicleType = type;
+    this.licenseNumber = number;
+  }
+
+  getVehicleType(): VehicleType {
+    return this.vehicleType;
+  }
+
+  getVehicleNumer(): string {
+    return this.licenseNumber;
   }
 }
-
-enum VehicleType {
-  Car = "car",
-  Bike = "bike",
-  Truck = "truck",
-}
-
-class Bike extends Vehicle {
-  type = VehicleType.Bike;
-}
-
-class Car extends Vehicle {
-  type = VehicleType.Car;
-}
-
-class Truck extends Vehicle {
-  type = VehicleType.Truck;
-}
-
-export { Vehicle, VehicleType, Car, Bike, Truck };
